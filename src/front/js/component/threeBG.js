@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from "three";
-import "../../styles/SignInBG.css";
+import "../../styles/homeBG.css";
 import cloud from '../../img/cloud.png';
 
 const SignInBG = () => {

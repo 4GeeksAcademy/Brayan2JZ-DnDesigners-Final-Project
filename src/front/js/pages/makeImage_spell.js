@@ -210,19 +210,15 @@ export const SpellImageCreator = () => {
   const componentRef = useRef();
   const [imageUri, setImageUri] = useState("");
   const [fileName,setFileName]=useState('')
-  const [tagList,setTagList]=useState(['Space Monkey','Cowboy Monkey','Zebronkey','Monkey Kong','Simian','Party Monkey'])
+  const [tagList,setTagList]=useState(["Hi","Im","Paul"])
   const { store, actions } = useContext(Context);
   const [imageUrl, setImageUrl] = useState("");
   const rand=Math.floor(Math.random() * 1000)
 
   useEffect(()=>{
-    const getTags=()=>{
-      setTagList([...tagList,store.formInputSpell.class.slice(9,),store.formInputSpell.rarity])
-    }
     if(imageUri != ""){
       console.log(imageUri)
-      getTags()
-      setImageUrl(actions.insertImage('fileName'+rand,imageUri,[tagList[rand%8]]));
+      setImageUrl(actions.insertImage('fileName'+rand,imageUri,tagList));
     }
   },[imageUri])
 
@@ -232,6 +228,18 @@ export const SpellImageCreator = () => {
     }
   },[imageUrl])
 
+  const getTags=async()=>{
+    setTagList([...tagList,store.formInputSpell.class.slice(9,)])
+    return
+  }
+  const handleExport=async()=>{
+      await getTags()
+      console.log(tagList)
+      const element = componentRef.current;
+      const uri=await actions.handleExportAsURI(element)
+      console.log(uri)
+      setImageUri(uri)
+    }
   return (
     <div> 
       <div className='d-flex mx-5 flex-row justify-content-center'>
@@ -246,11 +254,7 @@ export const SpellImageCreator = () => {
         </div>
       </div>
       <div className='export d-flex justify-content-center my-3'>
-      <button onClick={async ()=>{
-          const element = componentRef.current;
-          const uri=await actions.handleExportAsURI(element)
-          console.log(uri)
-          setImageUri(uri)}}>Export as URI</button>
+      <button onClick={handleExport}>Export as URI</button>
         <button onClick={actions.getImageURLs}>Get all Cards</button>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { GalleryCard } from '../component/galleryCard';
 
 export const Gallery = () => {
     const [cardList, setCardList] = useState([]);
@@ -6,48 +7,16 @@ export const Gallery = () => {
     const [imageCaption, setImageCaption] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([]);
-
     const [selectedImage, setSelectedImage] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const [comment, setComment] = useState('');
     const [commentsByImage, setCommentsByImage] = useState({});
 
-    const sendComment=()=>{
-        const date=new Date()
-        fetch(localStorage.getItem('backendUrl')+'api/comment',{
-            method:'POST',
-            body:JSON.stringify({
-                'userId':localStorage.getItem('id'),
-                'imageId':'imageIDPlaceholder',                 //replace with real imageId
-                'artId':'artIDPlaceholder',                     //replace with real artId
-                'comment':'The Comment to send',                //Replace with the comment you want to add
-                'uploadDate':date
-            }),
-            headers:{
-                'Content-Type':'application/json',
-                'Authorization':'Bearer '+localStorage.getItem('token')
-            }
-        }).then((response)=>{
-            respJson=response.json()
-            console.log(respJson)
-        }).catch((e)=>{
-            console.log(e)
-        })
-    };
+    const [tempComments, setTempComments] = useState([]);
 
-    const getComments=()=>{
-        fetch(localStorage.getItem('token')+'api/comments',{
-            method:'GET',
-            headers:{
-                'Content-Type':'application/json',
-                'Authorixation':'Bearer '+localStorage.getItem('token')
-            }
-        }).then((response)=>{
-            return response.json();
-        }).then((respJson)=>{
-            const commentsList=respJson;        //the returned list of comment for the passes in card/art ID. Need to place somewhere.
-        })
-    }
+    useEffect(()=>{
+        console.log(tempComments)
+    },[tempComments])
+    
 
     useEffect(() => {
         async function getImageURLs() {
@@ -135,31 +104,6 @@ export const Gallery = () => {
         setShowModal(true);
     };
 
-    const handleCloseModal = () => {
-        setShowModal(false);
-        setSelectedImage(null);
-    };
-
-    const handleCommentChange = (e) => {
-        setComment(e.target.value);
-    };
-
-    const handleAddComment = () => {
-        if (comment.trim() === '') {
-            alert('Please enter a comment!');
-            return;
-        }
-
-        setCommentsByImage((prev) => {
-            const updatedComments = {
-                ...prev,
-                [selectedImage.id]: [...(prev[selectedImage.id] || []), comment],
-            };
-            return updatedComments;
-        });
-
-        setComment('');
-    };
 
     return (
         <div>
@@ -219,13 +163,8 @@ export const Gallery = () => {
                             <div className="row row-cols-3">
                                 {cardList &&
                                     cardList.map((cardObj) => (
-                                        <div
-                                            className="col m-0 p-1"
-                                            key={cardObj.id}
-                                            onClick={() => handleImageClick(cardObj, true)}
-                                        >
-                                            <h3>{cardObj.filename}</h3>
-                                            <img width={200} height={282} src={cardObj.url} alt={cardObj.filename} />
+                                        <div key={cardObj.filename} onClick={() => handleImageClick(cardObj, true)}>
+                                            <img id={cardObj.id} alt={cardObj.filename} src={cardObj.url}/>
                                         </div>
                                     ))}
                             </div>
@@ -331,75 +270,7 @@ export const Gallery = () => {
 {selectedImage && showModal && (
     <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg">
-            <div className="modal-content" style={{ minHeight: '70vh' }}>
-                <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">
-                        {selectedImage.filename}
-                    </h5>
-                    <button type="button" className="btn-close" onClick={handleCloseModal}></button>
-                </div>
-                <div className="modal-body d-flex" style={{ overflowY: 'auto', height: '60vh' }}>
-
-{/* Image Section */}
-                    <div className="d-flex justify-content-center align-items-center" style={{ flex: '0 0 60%', paddingRight: '15px' }}>
-                        <img
-                            src={selectedImage.url}
-                            alt={selectedImage.filename}
-                            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-                        />
-                    </div>
-
-{/* Flex Container for Image and Comment Section */}
-                    <div className="d-flex flex-column" style={{ flex: '1', paddingLeft: '15px' }}>
-{/* Display caption for art */}
-{selectedImage.caption && <p><strong>Caption:</strong> {selectedImage.caption}</p>}
-
-{/* Comments Section */}
-                        <div
-                            style={{
-                                marginTop: '20px',
-                                height: '200px',
-                                overflowY: 'auto',
-                            }}
-                        >
-                            <h6>Comments:</h6>
-                            {commentsByImage[selectedImage.id]?.length > 0 ? (
-                                <ul style={{ padding: 0, listStyleType: 'none' }}>
-                                    {commentsByImage[selectedImage.id].map((comment, index) => (
-                                        <li
-                                            key={index}
-                                            style={{
-                                                wordBreak: 'break-word',
-                                                whiteSpace: 'normal',
-                                                marginBottom: '10px',
-                                                maxWidth: '100%',
-                                            }}
-                                        >
-                                            {comment}
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No comments yet.</p>
-                            )}
-                        </div>
-
-{/* Comment Input */}
-                        <div className="mb-3" style={{ marginTop: '20px' }}>
-                            <textarea
-                                className="form-control"
-                                value={comment}
-                                onChange={handleCommentChange}
-                                placeholder="Add a comment"
-                                rows="3"
-                            />
-                        </div>
-                        <button className="btn btn-primary" onClick={handleAddComment}>
-                            Add Comment
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <GalleryCard selectedImage={selectedImage} imageId={selectedImage.id} setShowModal={setShowModal} setSelectedImage={setSelectedImage}/>
         </div>
     </div>
 )}

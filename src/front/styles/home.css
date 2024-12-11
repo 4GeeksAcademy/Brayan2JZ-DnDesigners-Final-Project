@@ -1,0 +1,75 @@
+/* Basic styling for the pills */
+.pill-tab {
+    width: 180px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #333; /* Dark background color for tabs */
+    transition: transform 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+    margin: 0 10px; /* Space between the tabs */
+    opacity: 0.6; /* Initial dimmed state */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* To ensure image doesn't overflow */
+  }
+  
+  /* Center tab styling */
+  .center-tab {
+    z-index: 2; /* Center tab in front */
+  }
+  
+  /* Side tabs styling */
+  .side-tab {
+    z-index: 1; /* Behind the center tab */
+  }
+  
+  /* Styling for the image inside the pill tab */
+  .tab-img {
+    width: 80%; /* Image width should fit within the pill */
+    height: auto;
+    transition: transform 0.3s ease; /* Smooth transition for the image */
+  }
+  
+  /* Hover effect for all tabs */
+  .pill-tab:hover {
+    background-color: #ffcc00; /* Change background color on hover */
+    transform: translateY(-10px); /* Moves the tab up */
+    opacity: 1; /* Full opacity */
+  }
+  
+  /* Hover effect for the image */
+  .pill-tab:hover .tab-img {
+    transform: scale(1.1); /* Slight zoom effect for the image */
+  }
+  
+  /* Hover effect for non-center tabs */
+  .side-tab:not(:hover) {
+    opacity: 0.4; /* Dim non-hovered tabs */
+    transform: translateY(0); /* Keep non-hovered tabs in place */
+  }
+  
+  /* Optional: Light shadow effect to give depth */
+  .pill-tab {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  }
+  
+  .pill-tab:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  }
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=New+Rocker&family=Playwrite+BE+VLG:wght@100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=New+Rocker&family=Playwrite+BE+VLG:wght@100..400&display=swap');
+
+.top3{
+    height: 610px;
+}
+.container{
+    font-family:"Cinzel", system-ui; 
+}
+.title{
+    font-family: "New Rocker", system-ui; 
+      font-optical-sizing: auto;
+      font-weight: 500;
+      font-style: normal;
+      max-height: 120px;  
+      overflow: hidden;
+    }

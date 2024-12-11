@@ -32,7 +32,7 @@ export const SignIn = () => {
     fetch(localStorage.getItem('backendUrl') + 'api/token', {
       method: 'POST',
       body: JSON.stringify({
-        username: email,
+        username: email.toLowerCase(),
         password: password
       }),
       headers: { 'Content-Type': 'application/json' }
@@ -89,10 +89,10 @@ export const SignIn = () => {
               )}
 
               <div className="row mb-3">
-                <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
+                <label htmlFor="inputEmail3" className="col-sm-3 col-form-label">
                   Email
                 </label>
-                <div className="col-sm-10">
+                <div className="col-sm-9">
                   <input
                     type="email"
                     className="form-control"
@@ -105,10 +105,10 @@ export const SignIn = () => {
               </div>
 
               <div className="row mb-3">
-                <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">
+                <label htmlFor="inputPassword3" className="col-sm-3 col-form-label">
                   Password
                 </label>
-                <div className="col-sm-10">
+                <div className="col-sm-9">
                   <input
                     type="password"
                     className="form-control"

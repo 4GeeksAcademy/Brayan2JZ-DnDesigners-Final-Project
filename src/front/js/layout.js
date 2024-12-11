@@ -28,6 +28,8 @@ const Layout = () => {
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
 
+    // Create token logout here
+
     if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
     const backendUrl = "https://laughing-space-winner-69vqxv9qrjj934rw-3001.app.github.dev/";
     const { store, actions } = useContext(Context);

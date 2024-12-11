@@ -200,9 +200,6 @@ export const CharacterImageCreator = () => {
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(()=>{
-    const getTags=()=>{
-      setTagList([...tagList,store.formInput.class.slice(7,),store.formInput.race.slice(6),store.formInput,store.formInput.alignment[0]+' '+store.formInput.alignment[1]])
-    }
     if(imageUri != ""){
       console.log(imageUri)
       getTags()
@@ -216,6 +213,17 @@ export const CharacterImageCreator = () => {
     }
   },[imageUrl])
 
+  const getTags=async()=>{
+    setTagList([...tagList,store.formInput.class.slice(7,),store.formInput.race.slice(6),store.formInput,store.formInput.alignment[0]+' '+store.formInput.alignment[1]])
+  }
+  const handleExport=async()=>{
+    await getTags()
+    console.log(tagList)
+    const element = componentRef.current;
+    const uri=await actions.handleExportAsURI(element)
+    console.log(uri)
+    setImageUri(uri)
+  }
   return (
     
     <div> 
@@ -233,12 +241,7 @@ export const CharacterImageCreator = () => {
       </div>
       <label>filename</label>
       <input value={fileName} onChange={(e)=>{setFileName(e.target.value)}}></input>
-      <button onClick={async ()=>{
-          const element = componentRef.current;
-          const uri=await actions.handleExportAsURI(element)
-          console.log(uri)
-          setImageUri(uri)}
-        }>Export as URI</button>
+      <button onClick={handleExport}>Export as URI</button>
       <button onClick={actions.getImageURLs}>Get all Cards</button>
     </div>
   );

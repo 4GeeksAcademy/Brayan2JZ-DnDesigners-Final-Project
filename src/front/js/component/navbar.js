@@ -17,7 +17,7 @@ export const Navbar = () => {
   }, [actions, store.isLoggedIn]);
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary bg-light">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary bg-transparent">
       <SignIn />
       <Register />
       <div className="container-fluid">
@@ -101,13 +101,26 @@ export const Navbar = () => {
                   <i className="fa-regular fa-circle-user fa-2x"></i>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end">
-                  <li><a className="dropdown-item" href="/profile/:id">Profile</a></li>
-                  <li>
-                    <Link to='/favorites'>
-                      Favorites
-                    </Link>
+                  <li><a 
+                  className="dropdown-item"
+                  href="/profile/:id">
+                    Profile
+                  </a>
                   </li>
-                  <li><a className="dropdown-item" href="#">Settings</a></li>
+                  <li>
+                    <a
+                    className="dropdown-item"
+                    href="/favorites">
+                      Favorites
+                    </a>
+                  </li>
+
+                  <li><a 
+                  className="dropdown-item"
+                  href="#">
+                    Settings
+                  </a>
+                  </li>
                   <li><a 
                     className="dropdown-item" 
                     href="/" 
