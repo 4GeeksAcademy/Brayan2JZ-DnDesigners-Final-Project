@@ -112,14 +112,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  console.error("Error generating URI:", error);
 				}
 			  },
-			  insertImage:(fileName,imageUri,tagList)=>{
+			  insertImage: async (fileName,imageUri,tagList)=>{
 				const date=new Date()
 				if(fileName==''){
 				  alert("Please enter a name for the card")
 				  return
 				}
 				console.log("before fetch")
-				const Url=fetch(localStorage.getItem('backendUrl')+'api/card',{
+				const Url=await fetch(localStorage.getItem('backendUrl')+'api/card',{
 				  method:'POST',
 				  body:JSON.stringify({
 					'filename':fileName,
@@ -148,7 +148,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return(JSON.stringify(respJson['url']))
 				  })
 				})
-				return JSON.stringify(Url)
+				return Url;
 			  },
 			  getImageURLs:()=>{
 				fetch(localStorage.getItem('backendUrl')+'api/cards',{

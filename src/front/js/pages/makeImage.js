@@ -195,7 +195,7 @@ export const CharacterImageCreator = () => {
   const componentRef = useRef();
   const [imageUri, setImageUri] = useState("");
   const [fileName,setFileName]=useState('')
-  const [tagList,setTagList]=useState(['Paul'])
+  const [tagList,setTagList]=useState(['Paul','Mike'])
   const { store, actions } = useContext(Context);
   const [imageUrl, setImageUrl] = useState("");
 
@@ -203,7 +203,11 @@ export const CharacterImageCreator = () => {
     if(imageUri != ""){
       console.log(imageUri)
       getTags()
-      setImageUrl(actions.insertImage(fileName,imageUri,tagList));
+      async function pushImage() {
+        const fileUrl=await actions.insertImage(fileName,imageUri,tagList);
+        setImageUrl(fileUrl)
+      }
+      pushImage()
     }
   },[imageUri])
 

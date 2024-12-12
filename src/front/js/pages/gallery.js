@@ -80,7 +80,7 @@ export const Gallery = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                if (data.success) {
+                if (data.message='undefined') {
                     setUploadedImages((prev) => [...prev, {data, caption: imageCaption},]);
                     alert('Art uploaded successfully!');
                 } else {

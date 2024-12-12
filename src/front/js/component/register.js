@@ -39,7 +39,7 @@ export const Register = () => {
     fetch(localStorage.getItem('backendUrl') + 'api/register', {
       method: 'POST',
       body: JSON.stringify({
-        username: email.toLowerCase(),
+        email: email.toLowerCase(),
         password: password
       }),
       headers: { 'Content-Type': 'application/json' }

@@ -7,6 +7,7 @@ import '../../styles/home.css'
 
 export const Home = () => {
     const [cardList, setCardList] = useState([]);
+    const [carouselList,setCarouselList]=useState([])
 
     useEffect(() => {
         // Check if running in a Codespace
@@ -28,10 +29,63 @@ export const Home = () => {
                 return response.json();
             }).then((jsonRes) => {
                 setCardList(jsonRes);
+                return
             });
         }
+        async function setCarousel() {
+            setCarouselList([Math.floor(cardList[Math.random()*cardList.length]),Math.floor(cardList[Math.random()*cardList.length]),Math.floor(cardList[Math.random()*cardList.length])])
+        }
         getImageURLs();
+        setCarousel();
     }, []);
+
+    useEffect(()=>{
+        console.log(cardList)
+        async function getRandoms() {
+            var randomCards=[]
+            const flag=true
+            let count=0;
+            while(flag){
+                count+=1;
+                if(count>=10){
+                    console.log("overflow")
+                    return
+                }
+                let rand=Math.floor(Math.random()*cardList.length);
+                if(randomCards.length>=3){
+                    flag=false;
+                    return randomCards;
+                }
+                else if(randomCards.length==0){
+                    randomCards=[rand]
+                }
+                else{
+                    for(let i of randomCards){
+                        console.log(i)
+                        if(i==rand){
+                            break;
+                        }
+                        else{
+                            randomCards.push(rand)
+                        }
+                    }
+                }
+                
+            }
+        }
+        async function setCarousel() {
+            setCarouselList([cardList[randomCards[0]],cardList[randomCards[1]],cardList[randomCards[2]]])
+        }
+        if(cardList.length!=0){
+            //let randomCards=getRandoms();
+            let randomCards=[0,1,2]
+            setCarousel();
+        }
+    },[])
+
+    useEffect(()=>{
+        console.log(carouselList)
+    },[carouselList])
 
 
     return (
@@ -63,7 +117,7 @@ export const Home = () => {
 
 
 		<div id="carouselCards" className="card-group card-group-scroll">
-			 {cardList && cardList.map((cardObj) => (
+			 {carouselList && carouselList.map((cardObj) => (
                                         <div className="col-4 m-0 p-1 " key={cardObj.id} onClick={() => handleImageClick(cardObj, true)}>
                                             {/* <h3 className="text-center">{cardObj.filename}</h3> */}
                                             <img className="mw-100 top3" src={cardObj.url} alt={cardObj.filename} />

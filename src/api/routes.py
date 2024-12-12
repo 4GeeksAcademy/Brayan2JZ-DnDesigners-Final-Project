@@ -166,10 +166,10 @@ def allTags():
 #### USER STUFF
 @api.route('/token',methods=['POST'])
 def login():
-    username=request.json['username']
+    email=request.json['email']
     password=request.json['password']
     
-    user=User.query.filter_by(username=username).first()
+    user=User.query.filter_by(email=email).first()
     print(user)
 
     if user and check_password_hash(user.password, password):
@@ -194,19 +194,21 @@ def login():
     
 @api.route('/register',methods=['POST'])
 def register():
-    inputuser=request.json['username']
+    inputuser=request.json['email']
     inputpass=request.json['password']
 
-    isUser=User.query.filter_by(username=inputuser)
+    isUser=User.query.filter_by(email=inputuser).first()
+    print(isUser, isUser is None, not isUser)
 
-    if isUser:        
-        newUser=User(username=inputuser,password=generate_password_hash(inputpass))
+    if  isUser is not None:
+        return jsonify("User already exists")
+    else:
+        newUser=User(email=inputuser,password=generate_password_hash(inputpass))
         db.session.add(newUser)
         db.session.commit()
         print("Success")
         return jsonify("User created successfuly. Hello %s",inputuser)
-    else:
-        return jsonify("User already exists")
+        
 
 @api.route('/users',methods=['GET'])
 @jwt_required()
@@ -285,6 +287,8 @@ def getAllArt():
     allArt=ArtBank.query.all()
     allArt=list(map(lambda x: x.serialize(),allArt))
     return jsonify(allArt)
+
+
 
 @api.route('/user/username', methods=['PUT'])
 @jwt_required()
